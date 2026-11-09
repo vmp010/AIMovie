@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northline Air — 選擇航班（拍攝模擬網站）</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="booking">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/img/logo.svg" alt="Northline Air">
+        <span class="brand-text"><strong>Northline Air</strong><small>Northline Airways</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主要導覽">
+        <a href="index.html">航班搜尋</a>
+        <a href="policy.html">喪親優惠</a>
+        <a href="claim.html">申請優惠</a>
+        <a href="mail.html">我的信箱</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost btn-sm" href="staff.html">客服後台</a>
+        <a class="btn btn-primary btn-sm" href="index.html#search">重新搜尋</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">首頁</a><span>/</span><a href="index.html#search">航班搜尋</a><span>/</span><span>選擇航班</span>
+      </div>
+
+      <div class="page-head">
+        <h1 id="pageTitle">去程航班</h1>
+        <p id="pageSubtitle">Vancouver (YVR) → Toronto (YYZ) · 2022/11/12</p>
+      </div>
+
+      <ol class="steps" aria-label="訂票進度">
+        <li class="is-active" data-step="1"><span class="num">1</span>選擇航班</li>
+        <li data-step="2"><span class="num">2</span>確認訂購</li>
+        <li data-step="3"><span class="num">3</span>訂票完成</li>
+      </ol>
+
+      <div class="booking-layout">
+        <section>
+          <article class="flight-card" id="flightCard">
+            <div class="flight-main">
+              <div class="flight-airline">
+                <img src="assets/img/logo.svg" alt="">
+                <div>
+                  <strong>Northline Air</strong>
+                  <small><span id="flightNo">AIR 1103</span> · 經濟艙 · 直飛</small>
+                </div>
+              </div>
+              <div class="flight-route">
+                <div class="route-point">
+                  <strong id="departTime">08:10</strong>
+                  <span id="flightFrom">YVR</span>
+                  <small id="flightFromCity">Vancouver</small>
+                </div>
+                <div class="route-line">
+                  <span class="route-duration" id="duration">4 小時 25 分</span>
+                  <span class="line"></span>
+                  <small>直飛</small>
+                </div>
+                <div class="route-point">
+                  <strong id="arriveTime">15:35</strong>
+                  <span id="flightTo">YYZ</span>
+                  <small id="flightToCity">Toronto</small>
+                </div>
+              </div>
+            </div>
+            <div class="flight-side">
+              <div class="price">
+                <small id="purchaseLabel">去程單程含稅</small>
+                <strong id="priceAmount">C$794.98</strong>
+              </div>
+              <button class="btn btn-primary" type="button" id="selectFlight">選擇此航班</button>
+            </div>
+          </article>
+
+          <section class="confirm-panel card" id="confirmPanel" hidden>
+            <h2>確認訂購</h2>
+            <p style="color:var(--muted);margin-bottom:0">請確認以下航班與票價資訊。</p>
+            <dl class="kv">
+              <dt>航班</dt><dd id="confirmFlightNo">AIR 1103 · 直飛</dd>
+              <dt>航段</dt><dd id="confirmRoute">YVR Vancouver → YYZ Toronto</dd>
+              <dt>搭機日期</dt><dd id="confirmDate">2022/11/12</dd>
+              <dt>購票日期</dt><dd id="confirmBooked">2022/11/11</dd>
+              <dt>票價</dt><dd id="confirmAmount">C$794.98</dd>
+              <dt>乘客</dt><dd>Alex Chen（1 位成人）</dd>
+            </dl>
+            <div class="notice">
+              <span>ⓘ</span>
+              <span>本頁為拍攝用模擬訂票，不要求信用卡，也不會實際扣款或開票。</span>
+            </div>
+            <div class="form-actions" style="justify-content:space-between">
+              <button class="btn btn-outline" type="button" id="backToFlights">返回修改</button>
+              <button class="btn btn-primary btn-lg" type="button" id="confirmBooking">確認訂票</button>
+            </div>
+          </section>
+
+          <section class="success-card" id="successCard" hidden>
+            <div class="success-icon">✓</div>
+            <h2>訂票成功</h2>
+            <p>您的<span id="successType">去程</span>機票已完成模擬訂購。</p>
+            <div class="ref">FILM-1103</div>
+            <dl class="kv">
+              <dt>航班</dt><dd id="successFlightNo">AIR 1103</dd>
+              <dt>航段</dt><dd id="successRoute">YVR → YYZ</dd>
+              <dt>搭機日期</dt><dd id="successDate">2022/11/12</dd>
+              <dt>購票日期</dt><dd id="successBooked">2022/11/11</dd>
+              <dt>已付款金額</dt><dd id="successAmount">C$794.98</dd>
+            </dl>
+            <div class="notice ok" style="max-width:520px;margin-inline:auto;text-align:left">
+              <span>✓</span>
+              <span>模擬訂位代碼已建立。此畫面不會實際扣款，也不會向航空公司送出資料。</span>
+            </div>
+            <div class="success-actions">
+              <a class="btn btn-navy" href="boarding.html">查看登機證</a>
+              <a class="btn btn-outline" href="mail.html">前往信箱</a>
+              <a class="btn btn-outline" href="policy.html">喪親優惠政策</a>
+            </div>
+          </section>
+        </section>
+
+        <aside class="summary-card card">
+          <h3>訂購摘要</h3>
+          <div class="summary-route">
+            <span id="sumFrom">YVR</span>
+            <span class="plane">✈</span>
+            <span id="sumTo">YYZ</span>
+          </div>
+          <p class="summary-meta"><span id="sumRoute">Vancouver → Toronto</span><br><span id="sumDate">2022/11/12</span> · 1 位成人 · 經濟艙</p>
+          <dl class="money-list">
+            <div class="money-row"><dt>機票</dt><dd id="sumFare">C$794.98</dd></div>
+            <div class="money-row"><dt>稅金與費用</dt><dd>已包含</dd></div>
+            <div class="money-row total"><dt>總計</dt><dd class="val" id="sumTotal">C$794.98</dd></div>
+          </dl>
+          <div class="notice info" style="margin-bottom:0;margin-top:14px">
+            <span>ⓘ</span>
+            <span>購票日期 <strong id="bookedDate">2022/11/11</strong>，搭機日期 <strong id="flightDate">2022/11/12</strong>。</span>
+          </div>
+        </aside>
+      </div>
+
+      <p style="margin-top:22px;font-size:.78rem;color:var(--muted)">
+        需要協助？點擊右下角「AI 線上客服」。所有資料均為固定假資料，供微電影拍攝使用。
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/img/logo.svg" alt="">
+          <div><strong>Northline Air</strong><small>Northline Airways</small></div>
+        </div>
+        <p>課堂微電影《它說可以》拍攝用模擬航空公司網站。所有品牌、航班、票價與郵件皆為虛構。</p>
+        <div class="footer-links">
+          <a href="policy.html">喪親優惠政策</a>
+          <a href="claim.html">差額申請</a>
+          <a href="mail.html">模擬信箱</a>
+          <a href="staff.html">客服後台</a>
+          <a href="case.html">申訴與裁決</a>
+          <a href="boarding.html">登機證</a>
+        </div>
+      </div>
+      <div>
+        <p>本網站不收集信用卡、護照或任何真實個人資料，也不連接真實航空公司系統。</p>
+        <p>頁面按鈕僅改變本機假狀態，不會實際訂位、付款或寄送郵件。</p>
+      </div>
+      <p class="fineprint">Film prop / Fictional demo site — No real bookings or payments.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>客服後台 — 客訴工單 DEMO-1103（拍攝用）</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="staff">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/img/logo.svg" alt="Northline Air">
+        <span class="brand-text"><strong>Northline Air</strong><small>Customer Care Console</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主要導覽">
+        <a href="index.html">航班搜尋</a>
+        <a href="policy.html">喪親優惠</a>
+        <a href="claim.html">申請優惠</a>
+        <a href="mail.html">我的信箱</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost btn-sm" href="mail.html">模擬信箱</a>
+        <a class="btn btn-primary btn-sm" href="case.html">申訴案件</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">首頁</a><span>/</span><span>客服後台</span><span>/</span><span>客訴工單 DEMO-1103</span>
+      </div>
+
+      <div class="page-head">
+        <span class="eyebrow">Internal Console · Demo</span>
+        <h1>客訴工單對照</h1>
+        <p>同一品牌的兩份官方資訊並排檢視。本頁為拍攝用靜態後台，不需要登入或資料庫。</p>
+      </div>
+
+      <div class="staff-head card">
+        <div class="ticket-id">
+          <div class="glyph">CS</div>
+          <div>
+            <strong>客訴工單 #DEMO-1103</strong>
+            <small>乘客 Alex Chen · 訂位代碼 FILM-1103 · 喪親優惠差額爭議</small>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span class="tag">AI 對話證據</span>
+          <span class="tag">正式政策</span>
+          <span class="status-pill">待確認</span>
+        </div>
+      </div>
+
+      <div class="compare-grid">
+        <article class="compare-card card ai">
+          <div class="compare-label">
+            <span class="which">乘客提交的 AI 對話</span>
+            <span class="tag red">證據 A</span>
+          </div>
+          <h2>AI 線上客服回覆</h2>
+          <p class="compare-source">來源：Northline Air 官方網站 AI 客服 · 對話日期 2022/11/11</p>
+          <div class="quote-box">
+            「如果需要立即出發，或已經旅行，可在機票開立後
+            <span class="big-mark"><mark>90 天內</mark></span>
+            填寫退款申請表，申請喪親優惠票價。」
+          </div>
+          <div class="compare-meta">
+            <span><strong>乘客主張：</strong>依官方 AI 客服說明，於 90 天內提出申請應屬有效。</span>
+            <span><strong>申請日期：</strong>2022/11/17（旅程開始後 5 天）</span>
+            <span><strong>旅程日期：</strong>2022/11/12 去程、2022/11/18 回程</span>
+          </div>
+        </article>
+
+        <article class="compare-card card policy">
+          <div class="compare-label">
+            <span class="which">官網正式政策</span>
+            <span class="tag">證據 B</span>
+          </div>
+          <h2>喪親優惠票價政策</h2>
+          <p class="compare-source">來源：Northline Air 官方政策頁 · 最後更新 2022/10/01</p>
+          <div class="quote-box">
+            本公司<strong>不接受在旅行完成後才提出的喪親優惠追溯申請。</strong>
+            <span class="big-mark">不可在旅程完成後追溯申請</span>
+          </div>
+          <div class="compare-meta">
+            <span><strong>正式規定：</strong>須於訂票前／符合規定的階段提出申請。</span>
+            <span><strong>政策頁面：</strong><a href="policy.html">policy.html</a></span>
+            <span><strong>備註：</strong>政策未提及「90 天內可補申請」。</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="contradiction-strip">
+        <strong>同一品牌，兩種說法。</strong>
+        <small>客服人員需判斷：乘客合理信賴的是哪一份官方資訊？</small>
+      </div>
+
+      <div class="doc-note" style="margin-top:20px">
+        <strong>拍攝說明：</strong>本後台為戲劇化重製畫面，不是真實客服系統，也不含任何真實乘客資料。場景入口：<code>staff.html?scene=4-4</code>、<code>staff.html?scene=4-6</code>。
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/img/logo.svg" alt="">
+          <div><strong>Northline Air</strong><small>Northline Airways</small></div>
+        </div>
+        <p>課堂微電影《它說可以》拍攝用模擬航空公司網站。所有品牌、航班、票價與郵件皆為虛構。</p>
+        <div class="footer-links">
+          <a href="policy.html">喪親優惠政策</a>
+          <a href="claim.html">差額申請</a>
+          <a href="mail.html">模擬信箱</a>
+          <a href="staff.html">客服後台</a>
+          <a href="case.html">申訴與裁決</a>
+          <a href="boarding.html">登機證</a>
+        </div>
+      </div>
+      <div>
+        <p>本網站不收集信用卡、護照或任何真實個人資料，也不連接真實航空公司系統。</p>
+        <p>頁面按鈕僅改變本機假狀態，不會實際訂位、付款或寄送郵件。</p>
+      </div>
+      <p class="fineprint">Film prop / Fictional demo site — No real bookings or payments.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

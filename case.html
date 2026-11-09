@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>申訴與裁決 — Northline Air（拍攝重製畫面）</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="case">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/img/logo.svg" alt="Northline Air">
+        <span class="brand-text"><strong>Northline Air</strong><small>Northline Airways</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主要導覽">
+        <a href="index.html">航班搜尋</a>
+        <a href="policy.html">喪親優惠</a>
+        <a href="claim.html">申請優惠</a>
+        <a href="mail.html">我的信箱</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost btn-sm" href="staff.html">客服後台</a>
+        <a class="btn btn-primary btn-sm" href="policy.html">查看政策</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container-narrow">
+      <div class="breadcrumb">
+        <a href="index.html">首頁</a><span>/</span><span>申訴與裁決</span>
+      </div>
+
+      <div class="page-head">
+        <span class="eyebrow">Dispute &amp; Decision · Film Reconstruction</span>
+        <h1>申訴與裁決</h1>
+        <p>本頁為劇組排演用視覺摘要，不是加拿大機構的正式線上系統，也不是原始裁決畫面。</p>
+      </div>
+
+      <div class="mode-tabs" role="tablist" aria-label="顯示模式">
+        <button type="button" data-case-mode="prepare" class="is-active">準備申訴</button>
+        <button type="button" data-case-mode="decision">裁決結果</button>
+      </div>
+
+      <section id="prepareMode">
+        <div class="card form-card">
+          <div class="form-section-title">申訴資料</div>
+          <form id="appealForm">
+            <div class="form-grid">
+              <label class="field span-2">
+                <span>申訴主題</span>
+                <input type="text" name="subject" value="喪親優惠差額與 AI 客服資訊爭議" autocomplete="off">
+              </label>
+              <label class="field">
+                <span>訂位代碼</span>
+                <input type="text" name="reference" value="FILM-1103" autocomplete="off">
+              </label>
+              <label class="field">
+                <span>申訴人</span>
+                <input type="text" name="claimant" value="Alex Chen" autocomplete="off">
+              </label>
+              <label class="field span-2">
+                <span>申訴說明</span>
+                <textarea name="detail">本人依官方網站 AI 客服指示，於機票開立後 90 天內提出喪親優惠差額申請，卻遭以「無法追溯適用」拒絕。AI 客服與正式政策說法矛盾，請重新審視本案。</textarea>
+              </label>
+            </div>
+
+            <div class="form-section-title">證據附件清單</div>
+            <ul class="evidence-list">
+              <li>AI 客服對話截圖（2022/11/11）</li>
+              <li>喪親優惠差額申請表（2022/11/17）</li>
+              <li>退款拒絕通知（2022/12/06）</li>
+              <li>乘客補充證據信（2023/02/05）</li>
+              <li>客服承認文字可能誤導之回覆（2023/02/08）</li>
+            </ul>
+
+            <div class="notice">
+              <span>ⓘ</span>
+              <span>送出按鈕僅顯示模擬成功訊息，不會向任何機構提出真實申訴。</span>
+            </div>
+
+            <div class="form-actions" style="justify-content:space-between">
+              <a class="btn btn-outline" href="mail.html">查看證據郵件</a>
+              <button class="btn btn-primary btn-lg" type="submit" id="appealSubmit">提交申訴（模擬）</button>
+            </div>
+          </form>
+
+          <div class="notice ok" id="appealSubmitted" hidden style="margin-top:18px;margin-bottom:0">
+            <span>✓</span>
+            <span>申訴已送出（模擬）。案件編號：CASE-APPEAL-1103。此畫面僅供拍攝使用。</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="decisionMode" hidden>
+        <div class="decision-head">
+          <span class="stamp">Film Reconstruction · 非正式裁決畫面</span>
+          <div class="decision-date" id="decDate">2024/02/14</div>
+          <p class="decision-case">Moffatt v. Air Canada, 2024 BCCRT 149</p>
+          <p class="decision-case" style="margin-top:4px">（案件真實標題，僅作引用資料）</p>
+        </div>
+
+        <ul class="finding-list">
+          <li>航空公司對其官方網站聊天機器人提供的資訊負有責任。</li>
+          <li>聊天機器人的回覆構成過失性不實陳述（negligent misrepresentation）。</li>
+          <li>乘客對該資訊產生合理信賴，並因此受有損失。</li>
+        </ul>
+
+        <table class="amount-table">
+          <thead>
+            <tr><th>項目</th><th>金額</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>損害賠償</td><td id="decDamages">C$650.88</td></tr>
+            <tr><td>利息</td><td id="decInterest">C$36.14</td></tr>
+            <tr><td>程序費</td><td id="decFees">C$125.00</td></tr>
+            <tr class="total-row"><td>合計</td><td id="decTotal">C$812.02</td></tr>
+          </tbody>
+        </table>
+
+        <p class="case-note">
+          本頁依公開裁決資料製作視覺摘要，用於影片重製與排演。日期、金額與判斷要點請以原始裁決書為準；本頁不代表任何機構之正式通知。
+        </p>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+          <a class="btn btn-outline" href="staff.html">回看 AI／政策對照</a>
+          <a class="btn btn-outline" href="mail.html">回看證據郵件</a>
+        </div>
+      </section>
+
+      <div class="doc-note" style="margin-top:20px">
+        場景入口：<code>case.html?scene=5-6</code> 開啟準備申訴；<code>case.html?scene=6-4</code> 開啟裁決結果。
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/img/logo.svg" alt="">
+          <div><strong>Northline Air</strong><small>Northline Airways</small></div>
+        </div>
+        <p>課堂微電影《它說可以》拍攝用模擬航空公司網站。所有品牌、航班、票價與郵件皆為虛構。</p>
+        <div class="footer-links">
+          <a href="policy.html">喪親優惠政策</a>
+          <a href="claim.html">差額申請</a>
+          <a href="mail.html">模擬信箱</a>
+          <a href="staff.html">客服後台</a>
+          <a href="case.html">申訴與裁決</a>
+          <a href="boarding.html">登機證</a>
+        </div>
+      </div>
+      <div>
+        <p>本網站不收集信用卡、護照或任何真實個人資料，也不連接真實航空公司系統。</p>
+        <p>頁面按鈕僅改變本機假狀態，不會實際訂位、付款或寄送郵件。</p>
+      </div>
+      <p class="fineprint">Film prop / Fictional demo site — No real bookings or payments.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

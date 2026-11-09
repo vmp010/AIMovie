@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northline Air — 航班搜尋（拍攝模擬網站）</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="index">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/img/logo.svg" alt="Northline Air">
+        <span class="brand-text"><strong>Northline Air</strong><small>Northline Airways</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主要導覽">
+        <a href="index.html">航班搜尋</a>
+        <a href="policy.html">喪親優惠</a>
+        <a href="claim.html">申請優惠</a>
+        <a href="mail.html">我的信箱</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost btn-sm" href="staff.html">客服後台</a>
+        <a class="btn btn-primary btn-sm" href="#search">立即訂票</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow">Northline Air · 航班搜尋</span>
+          <h1>下一段旅程，<br>從這裡起飛。</h1>
+          <p>搜尋加拿大境內航班，查看即時示範票價，並在幾分鐘內完成模擬訂票。需要協助時，AI 線上客服隨時在右下角為您服務。</p>
+          <ul class="hero-points">
+            <li>直飛主要城市</li>
+            <li>24 小時 AI 線上客服</li>
+            <li>彈性票價選項</li>
+          </ul>
+        </div>
+
+        <div class="search-card" id="search">
+          <h2>尋找航班</h2>
+          <p class="sub">示範用固定資料，不會連線或扣款。</p>
+
+          <form id="searchForm" novalidate>
+            <div class="trip-switch" role="radiogroup" aria-label="行程類型">
+              <label><input type="radio" name="trip" value="oneway" checked><span>單程</span></label>
+              <label><input type="radio" name="trip" value="round"><span>來回</span></label>
+            </div>
+
+            <div class="field-row">
+              <label class="field">
+                <span>出發地</span>
+                <select id="fromCity" name="from">
+                  <option value="YVR" selected>Vancouver (YVR)</option>
+                  <option value="YYZ">Toronto (YYZ)</option>
+                  <option value="YUL">Montréal (YUL)</option>
+                  <option value="YYC">Calgary (YYC)</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>目的地</span>
+                <select id="toCity" name="to">
+                  <option value="YYZ" selected>Toronto (YYZ)</option>
+                  <option value="YVR">Vancouver (YVR)</option>
+                  <option value="YUL">Montréal (YUL)</option>
+                  <option value="YYC">Calgary (YYC)</option>
+                </select>
+              </label>
+            </div>
+
+            <div style="text-align:right;margin:-4px 0 10px">
+              <button type="button" id="swapCities" class="btn btn-ghost btn-sm">⇄ 交換出發地與目的地</button>
+            </div>
+
+            <div class="field-row">
+              <label class="field">
+                <span>出發日期</span>
+                <input type="date" id="departDate" name="date" value="2022-11-12">
+              </label>
+              <label class="field">
+                <span>回程日期</span>
+                <input type="date" name="returnDate" value="2022-11-18">
+              </label>
+            </div>
+
+            <label class="field">
+              <span>乘客</span>
+              <select name="pax">
+                <option>1 位成人</option>
+                <option>2 位成人</option>
+                <option>1 位成人 + 1 位兒童</option>
+              </select>
+            </label>
+
+            <button class="btn btn-primary btn-block btn-lg" type="submit">搜尋航班</button>
+            <p class="search-note">示範用固定資料，不會連線或扣款。</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="banner">
+          <div>
+            <span class="eyebrow">Bereavement Fares</span>
+            <h2>喪親優惠票價</h2>
+            <p>當您因親屬過世需要臨時旅行，Northline Air 提供喪親優惠票價。請於訂票前或符合規定的階段提出申請，並參閱正式政策了解完整規定。</p>
+          </div>
+          <a class="btn btn-outline" href="policy.html">查看正式政策</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="section-head">
+          <h2>為什麼選擇 Northline Air</h2>
+          <p>本頁為課堂微電影拍攝用模擬網站，所有航班與價格均為虛構資料。</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-icon">AI</div>
+            <h3>AI 線上客服</h3>
+            <p>全天候回覆航班、票價與政策問題。(固定劇本示範)</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">✓</div>
+            <h3>簡化訂票流程</h3>
+            <p>選擇航班、確認資訊、取得訂位代碼，三步完成。</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">◎</div>
+            <h3>清楚的政策說明</h3>
+            <p>所有票價規則集中於官方政策頁，方便查閱與對照。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/img/logo.svg" alt="">
+          <div><strong>Northline Air</strong><small>Northline Airways</small></div>
+        </div>
+        <p>課堂微電影《它說可以》拍攝用模擬航空公司網站。所有品牌、航班、票價與郵件皆為虛構。</p>
+        <div class="footer-links">
+          <a href="policy.html">喪親優惠政策</a>
+          <a href="claim.html">差額申請</a>
+          <a href="mail.html">模擬信箱</a>
+          <a href="staff.html">客服後台</a>
+          <a href="case.html">申訴與裁決</a>
+          <a href="boarding.html">登機證</a>
+        </div>
+      </div>
+      <div>
+        <p>本網站不收集信用卡、護照或任何真實個人資料，也不連接真實航空公司系統。</p>
+        <p>頁面按鈕僅改變本機假狀態，不會實際訂位、付款或寄送郵件。</p>
+      </div>
+      <p class="fineprint">Film prop / Fictional demo site — No real bookings or payments.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

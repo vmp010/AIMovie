@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Northline Air">
+  <circle cx="32" cy="32" r="30" fill="#0b2a4a"/>
+  <circle cx="32" cy="32" r="24" fill="none" stroke="#1e5aa8" stroke-width="1.5" opacity="0.8"/>
+  <path d="M11 39 L55 15 L35 43 L33.5 54 L27 44 Z" fill="#ffffff"/>
+  <path d="M11 39 L34 43 L33.5 54 Z" fill="#d7263d"/>
+  <circle cx="47.5" cy="20.5" r="3" fill="#8fc2ff"/>
+</svg>

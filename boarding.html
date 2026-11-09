@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>電子登機證 — Northline Air（拍攝用）</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="boarding">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/img/logo.svg" alt="Northline Air">
+        <span class="brand-text"><strong>Northline Air</strong><small>Northline Airways</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主要導覽">
+        <a href="index.html">航班搜尋</a>
+        <a href="policy.html">喪親優惠</a>
+        <a href="claim.html">申請優惠</a>
+        <a href="mail.html">我的信箱</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost btn-sm" href="staff.html">客服後台</a>
+        <a class="btn btn-primary btn-sm" href="booking.html">前往訂票</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">首頁</a><span>/</span><span>電子登機證</span>
+      </div>
+
+      <div class="page-head">
+        <span class="eyebrow">Mobile Boarding Pass · Film Prop</span>
+        <h1>電子登機證</h1>
+        <p>P2 靜態素材。可切換去程與回程登機證，供第三場快剪與特寫使用。</p>
+      </div>
+
+      <div class="segmented" role="tablist" aria-label="登機證選擇">
+        <button type="button" data-trip="outbound" class="is-active">去程 · 11/12</button>
+        <button type="button" data-trip="return">回程 · 11/18</button>
+      </div>
+
+      <article class="boarding-pass">
+        <div class="bp-top">
+          <div class="bp-brand">
+            <img src="assets/img/logo.svg" alt="">
+            <div>
+              <strong>Northline Air</strong>
+              <div style="font-size:.72rem;color:#a9c6e8" id="bpTripLabel">去程登機證</div>
+            </div>
+          </div>
+          <span class="bp-class">Economy</span>
+        </div>
+
+        <div class="bp-body">
+          <div class="bp-route">
+            <div class="bp-city">
+              <strong id="bpFrom">YVR</strong>
+              <span id="bpFromCity">Vancouver</span>
+            </div>
+            <div class="bp-line"></div>
+            <div class="bp-city" style="text-align:right">
+              <strong id="bpTo">YYZ</strong>
+              <span id="bpToCity">Toronto</span>
+            </div>
+          </div>
+
+          <div class="bp-grid">
+            <div><small>Passenger</small><strong id="bpPassenger">ALEX CHEN</strong></div>
+            <div><small>Flight</small><strong id="bpFlightNo">AIR 1103</strong></div>
+            <div><small>Date</small><strong id="bpDate">2022/11/12</strong></div>
+            <div><small>Boarding</small><strong id="bpBoarding">07:35</strong></div>
+            <div><small>Departs</small><strong id="bpDepart">08:10</strong></div>
+            <div><small>Arrives</small><strong id="bpArrive">15:35</strong></div>
+            <div><small>Gate</small><strong id="bpGate">C42</strong></div>
+            <div><small>Seat</small><strong class="bp-seat" id="bpSeat">18A</strong></div>
+          </div>
+        </div>
+
+        <div class="bp-stub">
+          <div class="barcode" id="bpBarcode" aria-hidden="true"></div>
+          <div style="text-align:right">
+            <small>Booking ref</small>
+            <strong id="bpRef" style="font-size:1.1rem;letter-spacing:.12em;color:var(--navy)">FILM-1103</strong>
+          </div>
+        </div>
+      </article>
+
+      <p style="text-align:center;margin-top:22px;font-size:.8rem;color:var(--muted)">
+        可直接以 <code>boarding.html?trip=return</code> 開啟回程登機證。此為虛構素材，不具任何搭機效力。
+      </p>
+
+      <div class="doc-note" style="max-width:720px;margin:22px auto 0">
+        <strong>拍攝提醒：</strong>登機證上的姓名、航班、座位與條碼皆為假資料；可全螢幕或手機翻拍使用，不需連接真實航空公司系統。
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/img/logo.svg" alt="">
+          <div><strong>Northline Air</strong><small>Northline Airways</small></div>
+        </div>
+        <p>課堂微電影《它說可以》拍攝用模擬航空公司網站。所有品牌、航班、票價與郵件皆為虛構。</p>
+        <div class="footer-links">
+          <a href="policy.html">喪親優惠政策</a>
+          <a href="claim.html">差額申請</a>
+          <a href="mail.html">模擬信箱</a>
+          <a href="staff.html">客服後台</a>
+          <a href="case.html">申訴與裁決</a>
+          <a href="boarding.html">登機證</a>
+        </div>
+      </div>
+      <div>
+        <p>本網站不收集信用卡、護照或任何真實個人資料，也不連接真實航空公司系統。</p>
+        <p>頁面按鈕僅改變本機假狀態，不會實際訂位、付款或寄送郵件。</p>
+      </div>
+      <p class="fineprint">Film prop / Fictional demo site — No real bookings or payments.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
