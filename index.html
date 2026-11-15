@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Northline Air — 航班搜尋（拍攝模擬網站）</title>
+  <title>Northline Air — 航班搜尋</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body data-page="index">
 
+  <div class="utility-bar"><div class="container"><span>Northline Air · 加拿大境內航線</span><span>Canada　|　繁體中文　|　CAD</span></div></div>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
@@ -16,12 +18,19 @@
       </a>
       <nav class="main-nav" aria-label="主要導覽">
         <a href="index.html">航班搜尋</a>
-        <a href="policy.html">喪親優惠</a>
-        <a href="claim.html">申請優惠</a>
-        <a href="mail.html">我的信箱</a>
+        <details class="nav-services">
+          <summary>旅客服務</summary>
+          <div class="service-menu">
+            <a href="boarding.html">電子登機證</a>
+            <a href="policy.html">喪親優惠</a>
+            <a href="claim.html">票價差額申請</a>
+          </div>
+        </details>
+        <a href="boarding.html">我的行程</a>
+        <a class="crew-only" href="mail.html">我的信箱</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-ghost btn-sm" href="staff.html">客服後台</a>
+        <a class="crew-only btn btn-ghost btn-sm" href="staff.html">客服後台</a>
         <a class="btn btn-primary btn-sm" href="#search">立即訂票</a>
       </div>
     </div>
@@ -32,23 +41,23 @@
       <div class="container hero-inner">
         <div class="hero-copy">
           <span class="eyebrow">Northline Air · 航班搜尋</span>
-          <h1>下一段旅程，<br>從這裡起飛。</h1>
-          <p>搜尋加拿大境內航班，查看即時示範票價，並在幾分鐘內完成模擬訂票。需要協助時，AI 線上客服隨時在右下角為您服務。</p>
+          <h1>讓重要的相聚，<br>少一點距離。</h1>
+          <p>連接溫哥華與多倫多。查詢航班、確認行程，為下一段旅程做好準備。</p>
           <ul class="hero-points">
-            <li>直飛主要城市</li>
+            <li>加拿大境內直飛</li>
             <li>24 小時 AI 線上客服</li>
-            <li>彈性票價選項</li>
+            <li>票價包含稅費</li>
           </ul>
+          <a class="route-offer" href="booking.html"><span>Vancouver <b>YVR → YYZ</b> Toronto</span><small>11 月 12 日 · 單程經濟艙 · 含稅</small><strong>C$794.98 <span>查看航班 →</span></strong></a>
         </div>
 
         <div class="search-card" id="search">
           <h2>尋找航班</h2>
-          <p class="sub">示範用固定資料，不會連線或扣款。</p>
+          <p class="sub">選擇出發地與日期，查詢單程航班。</p>
 
           <form id="searchForm" novalidate>
             <div class="trip-switch" role="radiogroup" aria-label="行程類型">
               <label><input type="radio" name="trip" value="oneway" checked><span>單程</span></label>
-              <label><input type="radio" name="trip" value="round"><span>來回</span></label>
             </div>
 
             <div class="field-row">
@@ -57,8 +66,6 @@
                 <select id="fromCity" name="from">
                   <option value="YVR" selected>Vancouver (YVR)</option>
                   <option value="YYZ">Toronto (YYZ)</option>
-                  <option value="YUL">Montréal (YUL)</option>
-                  <option value="YYC">Calgary (YYC)</option>
                 </select>
               </label>
               <label class="field">
@@ -66,8 +73,6 @@
                 <select id="toCity" name="to">
                   <option value="YYZ" selected>Toronto (YYZ)</option>
                   <option value="YVR">Vancouver (YVR)</option>
-                  <option value="YUL">Montréal (YUL)</option>
-                  <option value="YYC">Calgary (YYC)</option>
                 </select>
               </label>
             </div>
@@ -81,69 +86,57 @@
                 <span>出發日期</span>
                 <input type="date" id="departDate" name="date" value="2022-11-12">
               </label>
-              <label class="field">
-                <span>回程日期</span>
-                <input type="date" name="returnDate" value="2022-11-18">
-              </label>
+              <label class="field"><span>客艙</span><select name="cabin"><option>經濟艙</option></select></label>
             </div>
 
             <label class="field">
               <span>乘客</span>
               <select name="pax">
                 <option>1 位成人</option>
-                <option>2 位成人</option>
-                <option>1 位成人 + 1 位兒童</option>
               </select>
             </label>
 
             <button class="btn btn-primary btn-block btn-lg" type="submit">搜尋航班</button>
-            <p class="search-note">示範用固定資料，不會連線或扣款。</p>
+            <p class="search-note">票價以加幣計算，包含適用稅金與費用。</p>
+            <p id="searchError" class="notice" role="alert" hidden></p>
+            <p class="crew-only search-note">固定航線：11/12 YVR → YYZ；11/18 YYZ → YVR。無真實交易。</p>
           </form>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="banner">
-          <div>
-            <span class="eyebrow">Bereavement Fares</span>
-            <h2>喪親優惠票價</h2>
-            <p>當您因親屬過世需要臨時旅行，Northline Air 提供喪親優惠票價。請於訂票前或符合規定的階段提出申請，並參閱正式政策了解完整規定。</p>
-          </div>
-          <a class="btn btn-outline" href="policy.html">查看正式政策</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="padding-top:0">
+    <section class="section" id="services">
       <div class="container">
         <div class="section-head">
-          <h2>為什麼選擇 Northline Air</h2>
-          <p>本頁為課堂微電影拍攝用模擬網站，所有航班與價格均為虛構資料。</p>
+          <h2>為您的旅程提供協助</h2>
+          <p>從出發前的準備，到行程中的每一個問題。</p>
         </div>
         <div class="feature-grid">
           <article class="feature">
             <div class="feature-icon">AI</div>
             <h3>AI 線上客服</h3>
-            <p>全天候回覆航班、票價與政策問題。(固定劇本示範)</p>
+            <p>如需了解票價與服務，請使用右下角線上客服。</p>
           </article>
           <article class="feature">
             <div class="feature-icon">✓</div>
-            <h3>簡化訂票流程</h3>
-            <p>選擇航班、確認資訊、取得訂位代碼，三步完成。</p>
+            <h3>旅程資訊</h3>
+            <p>出發日期、航班與訂位資料，一目了然。</p>
+            <a href="boarding.html">查看電子登機證 →</a>
           </article>
           <article class="feature">
             <div class="feature-icon">◎</div>
-            <h3>清楚的政策說明</h3>
-            <p>所有票價規則集中於官方政策頁，方便查閱與對照。</p>
+            <h3>特殊旅程協助</h3>
+            <p>查看喪親優惠資格及申請程序，安排臨時行程。</p>
+            <a href="policy.html">了解喪親優惠 →</a>
           </article>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="customer-footer film-only"><div class="container"><strong>Northline Air</strong><nav aria-label="頁尾服務"><a href="index.html">預訂航班</a><a href="policy.html">喪親優惠政策</a><a href="claim.html">喪親優惠申請</a></nav><small>Canada · 繁體中文 · CAD</small></div></footer>
+
+  <footer class="site-footer crew-only">
     <div class="container footer-inner">
       <div>
         <div class="footer-brand">
@@ -154,9 +147,9 @@
         <div class="footer-links">
           <a href="policy.html">喪親優惠政策</a>
           <a href="claim.html">差額申請</a>
-          <a href="mail.html">模擬信箱</a>
-          <a href="staff.html">客服後台</a>
-          <a href="case.html">申訴與裁決</a>
+          <a class="crew-only" href="mail.html">模擬信箱</a>
+          <a class="crew-only" href="staff.html">客服後台</a>
+          <a class="crew-only" href="case.html">申訴與裁決</a>
           <a href="boarding.html">登機證</a>
         </div>
       </div>

@@ -1,0 +1,14 @@
+# Browser testing artifacts
+/.playwright-cli/
+/output/playwright/
+
+# Local environment variables
+.env
+.env.*
+!.env.example
+
+# Operating system and Word temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+~$*.docx

@@ -11,18 +11,27 @@
   const params = new URLSearchParams(window.location.search);
   const scene = (params.get('scene') || '').trim();
   const page = document.body.dataset.page || '';
+  const filmMode = params.get('film') === '1' && params.get('crew') !== '1';
+  document.body.classList.add(filmMode ? 'film-mode' : 'crew-mode');
 
   const $ = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
   const DEFAULTS = {
     mode: 'normal',
-    booking: null,
+    bookings: {},
     claim: null,
     readMails: []
   };
 
   let state = loadState();
+
+  // 相容舊版單筆訂單，之後分別保存去程與回程。
+  state.bookings = Object.assign({}, state.bookings);
+  if (state.booking && state.booking.type && !state.bookings[state.booking.type]) {
+    state.bookings[state.booking.type] = state.booking;
+  }
+  delete state.booking;
 
   function loadState() {
     try {
@@ -82,6 +91,22 @@
     });
   }
 
+  function modeUrl(href) {
+    const url = new URL(href, window.location.href);
+    if (url.origin !== window.location.origin || !/\.html$/.test(url.pathname)) return href;
+    if (!url.searchParams.has('film') && !url.searchParams.has('crew')) {
+      url.searchParams.set(filmMode ? 'film' : 'crew', '1');
+    }
+    return url.pathname + url.search + url.hash;
+  }
+
+  function preserveMode(root) {
+    $$('a[href]', root).forEach(function (link) {
+      const href = link.getAttribute('href');
+      if (href && !href.startsWith('#')) link.setAttribute('href', modeUrl(href));
+    });
+  }
+
   /* ---------------------------------------------------------
      Shared demo tools (scene label + reset)
      --------------------------------------------------------- */
@@ -94,8 +119,32 @@
       '<span class="scene-chip"><span class="dot"></span>' +
       (scene ? '場次 ' + esc(scene) : '示範模式') +
       '</span>' +
-      '<button type="button" data-demo-reset>Reset Demo</button>';
+      '<button type="button" data-demo-reset>Reset Demo</button>' +
+      '<button type="button" data-scene-replay>重播場次</button>' +
+      '<details class="crew-scenes"><summary>場次入口</summary><nav aria-label="劇組場次">' +
+      [
+        ['1-3 航班搜尋', 'index.html?scene=1-3'],
+        ['1-6 客服開場', 'index.html?scene=1-6'],
+        ['2-2 九十天回答', 'index.html?scene=2-2'],
+        ['2-4 去程購票', 'booking.html?scene=2-4'],
+        ['3-1 去程登機證', 'boarding.html'],
+        ['3-2 回程購票', 'booking.html?trip=return&scene=3-2'],
+        ['3-3 提出申請', 'claim.html?scene=3-3'],
+        ['3-4 回程登機證', 'boarding.html?trip=return'],
+        ['4-1 拒絕通知', 'mail.html?scene=4-1'],
+        ['4-3 寄出證據', 'mail.html?scene=4-3'],
+        ['4-4 客服工單', 'staff.html?scene=4-4'],
+        ['4-5 客服回覆', 'mail.html?scene=4-5'],
+        ['5-6 準備申訴', 'case.html?scene=5-6'],
+        ['6-2 歷史資料', 'case.html?scene=6-2'],
+        ['6-4 裁決通知', 'case.html?scene=6-4'],
+        ['7-7 結尾', 'index.html?scene=7-7']
+      ].map(function (item) { return '<a href="' + esc(item[1]) + '">' + item[0] + '</a>'; }).join('') +
+      '</nav></details>' +
+      '<a class="film-entry" href="' + esc(window.location.pathname + '?' +
+        new URLSearchParams(Object.assign(Object.fromEntries(params), { film: '1', crew: '0' })).toString()) + '">進入拍攝</a>';
     document.body.appendChild(tools);
+    $('[data-scene-replay]', tools).addEventListener('click', function () { window.location.reload(); });
 
     tools.querySelector('[data-demo-reset]').addEventListener('click', function () {
       resetState();
@@ -115,10 +164,12 @@
     controls: null,
     modeLabel: null,
     busy: false,
+    timer: null,
     open: false
   };
 
   function mountChat() {
+    if (['index', 'booking', 'policy', 'claim'].indexOf(page) === -1) return;
     if ($('.chat-root')) return;
 
     const root = document.createElement('div');
@@ -151,7 +202,7 @@
       '<input id="chatText" type="text" autocomplete="off" placeholder="輸入訊息…" aria-label="輸入訊息">' +
       '<button class="btn btn-primary btn-sm" type="submit">送出</button>' +
       '</form>' +
-      '<div class="chat-foot"><a href="policy.html">喪親優惠政策</a> · AI 回覆為固定劇本，僅供拍攝使用。</div>' +
+      '<div class="chat-foot"><a href="policy.html">喪親優惠政策</a><span class="crew-only"> · AI 回覆為固定劇本，僅供拍攝使用。</span></div>' +
       '</section>';
 
     document.body.appendChild(root);
@@ -193,7 +244,7 @@
       event.preventDefault();
       const input = $('#chatText', root);
       const text = input.value.trim();
-      if (!text) return;
+      if (!text || chat.busy) return;
       input.value = '';
       handleUserMessage(text);
     });
@@ -250,6 +301,7 @@
       msg.appendChild(note);
     }
     chat.quick.insertAdjacentElement('beforebegin', msg);
+    preserveMode(msg);
     scrollChat();
     return msg;
   }
@@ -271,7 +323,7 @@
     scrollChat();
 
     return new Promise(function (resolve) {
-      window.setTimeout(function () {
+      chat.timer = window.setTimeout(function () {
         removeTyping();
         addMessage('bot', html, withDisclaimer);
         chat.busy = false;
@@ -310,14 +362,16 @@
 
   function resetChat() {
     if (!chat.body) return;
+    window.clearTimeout(chat.timer);
     removeTyping();
     $$('.msg', chat.body).forEach(function (el) { el.remove(); });
     chat.busy = false;
-    addMessage('bot', DATA.chat.welcome);
+    addMessage('bot', DATA.chat.welcome, state.mode === 'ending');
     renderQuick();
   }
 
   function handleUserMessage(text) {
+    if (chat.busy) return;
     const trimmed = String(text || '').trim();
     if (!trimmed) return;
 
@@ -352,9 +406,16 @@
   }
 
   function runChatScene() {
-    if (!scene) return;
+    if (!scene || !chat.panel) return;
 
-    if (scene === '1-5' || scene === '1-6' || scene === '2-1') {
+    if (scene === '1-6') {
+      openChat();
+      autoExchange(DATA.chat.quickQuestions[0], DATA.chat.afterHours + '<br><br>' +
+        DATA.chat.intro + ' <a href="policy.html">查看喪親優惠政策 →</a>', false);
+      return;
+    }
+
+    if (scene === '1-5' || scene === '2-1') {
       openChat();
       return;
     }
@@ -396,20 +457,27 @@
         const from = fromSel.value;
         fromSel.value = toSel.value;
         toSel.value = from;
+        $('#departDate').value = fromSel.value === 'YYZ' ? DATA.returnFlight.flightAt : DATA.departure.flightAt;
       });
     }
 
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      const tripInput = form.querySelector('input[name="trip"]:checked');
-      const trip = tripInput ? tripInput.value : 'oneway';
+      const flight = fromSel.value === 'YYZ' ? DATA.returnFlight : DATA.departure;
+      const error = $('#searchError');
+      if (fromSel.value !== flight.from || toSel.value !== flight.to || $('#departDate').value !== flight.flightAt) {
+        error.textContent = '您選擇的航線或日期目前沒有可預訂航班，請調整搜尋條件。';
+        error.hidden = false;
+        return;
+      }
+      error.hidden = true;
       const query = new URLSearchParams({
-        trip: trip,
+        trip: flight === DATA.returnFlight ? 'return' : 'outbound',
         from: fromSel ? fromSel.value : 'YVR',
         to: toSel ? toSel.value : 'YYZ',
         date: $('#departDate') ? $('#departDate').value : '2022-11-12'
       });
-      window.location.href = 'booking.html?' + query.toString();
+      window.location.href = modeUrl('booking.html?' + query.toString());
     });
 
     if (scene === '1-3') {
@@ -427,6 +495,18 @@
     const isReturn = params.get('trip') === 'return';
     const flight = isReturn ? DATA.returnFlight : DATA.departure;
     const purchaseLabel = isReturn ? '回程單程含稅' : '去程單程含稅';
+
+    if (['from', 'to', 'date'].some(function (key) {
+      return params.has(key) && params.get(key) !== (key === 'date' ? flight.flightAt : flight[key]);
+    }) || (params.has('trip') && ['oneway', 'outbound', 'return'].indexOf(params.get('trip')) === -1)) {
+      $('.booking-layout').hidden = true;
+      $('.steps').hidden = true;
+      setText('#pageTitle', '沒有符合條件的航班');
+      setText('#pageSubtitle', '請返回航班搜尋，重新選擇出發地、目的地與日期。');
+      return;
+    }
+
+    $('#bookingBoardingLink').href = modeUrl('boarding.html?trip=' + (isReturn ? 'return' : 'outbound'));
 
     setText('#pageTitle', isReturn ? '回程航班' : '去程航班');
     setText('#pageSubtitle', isReturn
@@ -504,9 +584,15 @@
     const confirmBtn = $('#confirmBooking');
     if (confirmBtn) {
       confirmBtn.addEventListener('click', function () {
-        state.booking = {
+        if (!$('#paymentAgree').checked) {
+          $('#paymentError').hidden = false;
+          return;
+        }
+        $('#paymentError').hidden = true;
+        state.bookings[isReturn ? 'return' : 'outbound'] = {
           type: isReturn ? 'return' : 'outbound',
           reference: DATA.booking.reference,
+          passenger: DATA.booking.passenger,
           flightNo: flight.flightNo,
           amount: flight.amount,
           date: flight.flightAt
@@ -525,7 +611,7 @@
       });
     }
 
-    if (scene === '2-4') {
+    if (scene === '2-4' || scene === '3-2') {
       window.setTimeout(selectFlight, 200);
     }
   }
@@ -546,6 +632,18 @@
     const refInput = $('#claimRef');
     const reasonInput = $('#claimReason');
     const agreeInput = $('#claimAgree');
+    const routeInput = $('#claimRoute');
+    let attachmentSelected = false;
+    let draft = null;
+
+    function selectAttachment(selected) {
+      attachmentSelected = selected;
+      $('#claimAttachment').hidden = !selected;
+      $('#removeAttachment').hidden = !selected;
+      $('#chooseAttachment').hidden = selected;
+    }
+    $('#chooseAttachment').addEventListener('click', function () { selectAttachment(true); });
+    $('#removeAttachment').addEventListener('click', function () { selectAttachment(false); });
 
     if (nameInput) nameInput.value = claim.name;
     if (refInput) refInput.value = DATA.booking.reference;
@@ -568,10 +666,16 @@
     }
 
     function showConfirm() {
-      setText('#claimConfirmName', claim.name);
-      setText('#claimConfirmRef', DATA.booking.reference);
-      setText('#claimConfirmRoute', 'Vancouver (YVR) → Toronto (YYZ) · 2022/11/12');
-      setText('#claimConfirmReason', claim.reason);
+      draft = {
+        name: nameInput.value.trim(), reference: refInput.value.trim(),
+        route: routeInput.selectedOptions[0].textContent,
+        reason: reasonInput.value.trim(), attachment: claim.attachment
+      };
+      setText('#claimConfirmName', draft.name);
+      setText('#claimConfirmRef', draft.reference);
+      setText('#claimConfirmRoute', draft.route);
+      setText('#claimConfirmReason', draft.reason);
+      setText('#claimConfirmAttachment', draft.attachment);
       setText('#claimConfirmDate', slashDate(claim.submittedAt));
       if (wrap) wrap.hidden = true;
       if (confirm) confirm.hidden = false;
@@ -579,6 +683,11 @@
     }
 
     function showSuccess() {
+      setText('#claimSuccessName', draft.name);
+      setText('#claimSuccessBooking', draft.reference);
+      setText('#claimSuccessRoute', draft.route);
+      setText('#claimSuccessReason', draft.reason);
+      setText('#claimSuccessAttachment', draft.attachment);
       if (confirm) confirm.hidden = true;
       if (wrap) wrap.hidden = true;
       if (success) {
@@ -591,6 +700,14 @@
       form.addEventListener('submit', function (event) {
         event.preventDefault();
         clearError();
+        if (!nameInput.value.trim() || !refInput.value.trim() || !reasonInput.value.trim()) {
+          showError('請填寫申請人、訂位代碼與申請理由。');
+          return;
+        }
+        if (!attachmentSelected) {
+          showError('請先選擇證明文件附件。');
+          return;
+        }
         if (agreeInput && !agreeInput.checked) {
           showError('請先勾選確認事項，再繼續送出申請。');
           return;
@@ -611,6 +728,7 @@
     const submit = $('#claimSubmit');
     if (submit) {
       submit.addEventListener('click', function () {
+        if (!draft) return;
         state.claim = {
           submittedAt: claim.submittedAt,
           reference: claim.reference
@@ -618,10 +736,6 @@
         saveState();
         showSuccess();
       });
-    }
-
-    if (state.claim && !scene) {
-      showSuccess();
     }
 
     if (scene === '3-3') {
@@ -647,6 +761,7 @@
     };
 
     let currentId = sceneMap[scene] || null;
+    let currentFolder = currentId === 'evidence-sent' ? 'sent' : 'inbox';
 
     function isRead(id) {
       return state.readMails.indexOf(id) !== -1;
@@ -667,7 +782,17 @@
 
     function renderList() {
       listEl.innerHTML = '';
-      DATA.mails.forEach(function (mail) {
+      const mails = DATA.mails.filter(function (mail) { return mail.folder === currentFolder; });
+      setText('#mailFolderTitle', currentFolder === 'sent' ? '已寄出' : '收件匣');
+      setText('#mailCount', mails.length + ' 封郵件');
+      $$('[data-folder]').forEach(function (link) {
+        link.classList.toggle('is-active', link.dataset.folder === currentFolder);
+        link.setAttribute('aria-current', link.dataset.folder === currentFolder ? 'page' : 'false');
+        setText('#' + link.dataset.folder + 'Count', DATA.mails.filter(function (mail) {
+          return mail.folder === link.dataset.folder;
+        }).length);
+      });
+      mails.forEach(function (mail) {
         const unread = mail.unread && !isRead(mail.id);
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -698,14 +823,14 @@
     function renderRead(id) {
       const mail = DATA.mails.filter(function (m) { return m.id === id; })[0];
       if (!mail) {
-        readEl.innerHTML = '<div class="mail-empty">選擇左側郵件以閱讀內容。<br><span class="tag">戲劇化模擬信件</span></div>';
+        readEl.innerHTML = '<div class="mail-empty">選擇郵件以閱讀內容。<br><span class="tag crew-only">戲劇化模擬信件</span></div>';
         return;
       }
 
       const initial = esc(mail.fromName.charAt(0));
       const avatarClass = mail.folder === 'sent' ? ' customer' : '';
       const attachments = mail.attachments.length
-        ? '<div class="mail-attachments"><h3>附件（模擬檔名）</h3><ul class="attachment-list">' +
+        ? '<div class="mail-attachments"><h3>附件</h3><ul class="attachment-list">' +
           mail.attachments.map(function (name) {
             return '<li>' + esc(name) + '</li>';
           }).join('') +
@@ -727,8 +852,34 @@
         mail.body.map(function (paragraph) { return '<p>' + esc(paragraph) + '</p>'; }).join('') +
         '</div>' +
         attachments +
-        '<p class="case-note">' + esc(DATA.mailDisclaimer) + '</p>';
+        '<p class="case-note crew-only">' + esc(DATA.mailDisclaimer) + '</p>';
     }
+
+    $$('[data-folder]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        currentFolder = link.dataset.folder;
+        currentId = null;
+        renderList();
+        renderRead(null);
+      });
+    });
+
+    $('#composeMail').addEventListener('click', function () {
+      currentId = null;
+      renderList();
+      const evidence = DATA.mails.find(function (mail) { return mail.id === 'evidence-sent'; });
+      readEl.innerHTML = '<h2>撰寫郵件</h2><form id="mailDraft">' +
+        '<label class="field"><span>收件人</span><input value="' + esc(evidence.toAddress) + '" readonly></label>' +
+        '<label class="field"><span>主旨</span><input maxlength="160" value="' + esc(evidence.subject) + '"></label>' +
+        '<label class="field"><span>內容</span><textarea rows="8" maxlength="2000">' + esc(evidence.body.join('\n\n')) + '</textarea></label>' +
+        '<p class="case-note">僅在本頁預覽草稿，不會儲存或寄出。</p>' +
+        '<button class="btn btn-outline" type="submit">完成草稿預覽</button></form>';
+      $('#mailDraft').addEventListener('submit', function (event) {
+        event.preventDefault();
+        readEl.innerHTML = '<div class="mail-empty">草稿預覽結束，未寄出任何郵件。</div>';
+      });
+    });
 
     if (currentId) {
       markRead(currentId);
@@ -745,6 +896,9 @@
     if (page !== 'case') return;
 
     const decision = DATA.decision;
+    setText('#decTitle', decision.caseTitle);
+    setText('#sourceTitle', decision.sourceTitle);
+    $('#sourceLink').href = decision.sourceUrl;
     setText('#decDate', slashDate(decision.date));
     setText('#decDamages', money(decision.damages));
     setText('#decInterest', money(decision.interest));
@@ -753,6 +907,7 @@
 
     const prepare = $('#prepareMode');
     const decisionMode = $('#decisionMode');
+    const sourcesMode = $('#sourcesMode');
 
     function setMode(mode) {
       $$('[data-case-mode]').forEach(function (btn) {
@@ -760,6 +915,7 @@
       });
       if (prepare) prepare.hidden = mode !== 'prepare';
       if (decisionMode) decisionMode.hidden = mode !== 'decision';
+      if (sourcesMode) sourcesMode.hidden = mode !== 'sources';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -769,7 +925,8 @@
       });
     });
 
-    setMode(scene === '6-4' ? 'decision' : 'prepare');
+    setMode(params.get('view') === 'sources' || scene === '6-2' ? 'sources'
+      : /^6-[345]$/.test(scene) ? 'decision' : 'prepare');
 
     const appealForm = $('#appealForm');
     if (appealForm) {
@@ -780,10 +937,26 @@
         const btn = $('#appealSubmit');
         if (btn) {
           btn.disabled = true;
-          btn.textContent = '已送出（模擬）';
+          btn.textContent = '資料已備妥';
         }
       });
     }
+  }
+
+  function initStaff() {
+    if (page !== 'staff') return;
+    const main = $('main');
+    const logout = $('#staffLogout');
+    const signedOut = document.createElement('div');
+    signedOut.className = 'container page';
+    signedOut.hidden = true;
+    signedOut.innerHTML = '<h1>工作階段已結束</h1><p>請使用右上角按鈕返回工作台。</p>';
+    main.insertAdjacentElement('afterend', signedOut);
+    logout.addEventListener('click', function () {
+      main.hidden = !main.hidden;
+      signedOut.hidden = !main.hidden;
+      logout.textContent = main.hidden ? '返回工作台' : '登出';
+    });
   }
 
   /* ---------------------------------------------------------
@@ -853,6 +1026,8 @@
      Boot
      --------------------------------------------------------- */
   function boot() {
+    // 每個場次都從自己的時間點開始，避免結尾模式污染前面的鏡頭。
+    state.mode = /^7-/.test(scene) ? 'ending' : 'normal';
     markActiveNav();
     mountDemoTools();
     mountChat();
@@ -862,9 +1037,11 @@
     initClaim();
     initMail();
     initCase();
+    initStaff();
     initBoarding();
 
     runChatScene();
+    preserveMode(document);
   }
 
   if (document.readyState === 'loading') {

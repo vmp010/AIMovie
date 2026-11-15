@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>喪親優惠票價／Bereavement Fares — Northline Air</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body data-page="policy">
 
+  <div class="utility-bar"><div class="container"><span>Northline Air · 加拿大境內航線</span><span>Canada　|　繁體中文　|　CAD</span></div></div>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
@@ -16,12 +18,19 @@
       </a>
       <nav class="main-nav" aria-label="主要導覽">
         <a href="index.html">航班搜尋</a>
-        <a href="policy.html">喪親優惠</a>
-        <a href="claim.html">申請優惠</a>
-        <a href="mail.html">我的信箱</a>
+        <details class="nav-services">
+          <summary>旅客服務</summary>
+          <div class="service-menu">
+            <a href="boarding.html">電子登機證</a>
+            <a href="policy.html">喪親優惠</a>
+            <a href="claim.html">票價差額申請</a>
+          </div>
+        </details>
+        <a href="boarding.html">我的行程</a>
+        <a class="crew-only" href="mail.html">我的信箱</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-ghost btn-sm" href="staff.html">客服後台</a>
+        <a class="crew-only btn btn-ghost btn-sm" href="staff.html">客服後台</a>
         <a class="btn btn-primary btn-sm" href="claim.html">提出申請</a>
       </div>
     </div>
@@ -50,9 +59,9 @@
         <p>申請人須為乘客本人或其授權代理人，並能提供本公司合理要求之相關證明文件。</p>
 
         <h2>2. 申請時機</h2>
-        <p>旅客應於訂票前，或於本公司指定之階段提出喪親優惠申請。若旅客已購買一般機票，欲改適用喪親優惠，須依本政策規定於旅程開始前完成申請程序。</p>
+        <p>喪親優惠須於購票時提出申請並完成資格確認。已按一般票價購買的機票，不接受事後追溯調整；填寫差額申請表不代表已取得優惠資格。</p>
         <div class="policy-highlight">本公司不接受在旅行完成後才提出的喪親優惠追溯申請。</div>
-        <p>如需適用優惠，請依政策於訂票前／符合規定的階段聯繫航空公司辦理。</p>
+        <p>請於購票前聯繫客服確認適用資格與辦理方式。上述購票時申請限制，亦適用於尚未搭乘的已購票航段。</p>
 
         <h2>3. 應備文件</h2>
         <ul>
@@ -64,16 +73,16 @@
         <p>所有文件僅用於資格審核，並依本公司隱私政策處理。</p>
 
         <h2>4. 票價與差額</h2>
-        <p>喪親優惠票價依適用航段、艙等與當時可售票種而定。若旅客已購買一般機票並獲核准適用優惠，差額之退還方式與時程依本公司退款規定辦理。</p>
+        <p>喪親優惠票價依適用航段、艙等與當時可售票種而定，核准後於購票時適用。一般票價與優惠票價的差異，不構成事後申請退還差額的依據。</p>
         <p>申請送出後，僅代表本公司已受理案件，不代表已同意退款或適用優惠。最終結果以本公司書面通知為準。</p>
 
         <h2>5. 名詞說明</h2>
-        <p>「旅行完成後」指乘客已完成機票所載全部航段之搭乘。若旅客僅完成部分航段，是否屬本政策所稱之旅行完成，依個案事實認定。</p>
+        <p>「追溯適用」指已購票後要求改按另一優惠票價計算。旅程是否全部完成，與是否已按一般票價購票，是不同的審核事項。</p>
         <p>本政策內容可能隨時更新，最新版本以官方網站公告為準。</p>
       </article>
 
-      <div class="doc-note">
-        <strong>拍攝說明：</strong>本頁為課堂微電影拍攝用模擬政策頁。「如需適用優惠，請依政策於訂票前／符合規定的階段聯繫航空公司辦理」為簡化之拍攝文案，不代表任何真實裁決書逐字條文。所有品牌、日期與條款均為虛構或戲劇化呈現。
+      <div class="doc-note crew-only">
+        <strong>拍攝說明：</strong>「完成旅行後不得追溯」保留案件中政策的核心意思；購票時申請與一般票價不得事後調整，是 Northline Air 的簡化劇情規則，非原裁決逐字引述。11/17 申請時回程尚未搭乘。
       </div>
 
       <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
@@ -83,7 +92,9 @@
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer class="customer-footer film-only"><div class="container"><strong>Northline Air</strong><nav aria-label="頁尾服務"><a href="index.html">預訂航班</a><a href="policy.html">喪親優惠政策</a><a href="claim.html">喪親優惠申請</a></nav><small>Canada · 繁體中文 · CAD</small></div></footer>
+
+  <footer class="site-footer crew-only">
     <div class="container footer-inner">
       <div>
         <div class="footer-brand">
@@ -94,9 +105,9 @@
         <div class="footer-links">
           <a href="policy.html">喪親優惠政策</a>
           <a href="claim.html">差額申請</a>
-          <a href="mail.html">模擬信箱</a>
-          <a href="staff.html">客服後台</a>
-          <a href="case.html">申訴與裁決</a>
+          <a class="crew-only" href="mail.html">模擬信箱</a>
+          <a class="crew-only" href="staff.html">客服後台</a>
+          <a class="crew-only" href="case.html">申訴與裁決</a>
           <a href="boarding.html">登機證</a>
         </div>
       </div>

@@ -46,7 +46,7 @@ const DEMO_DATA = {
     submittedAt: '2022-11-17',
     reference: 'CASE-CLAIM-1103',
     status: 'Submitted',
-    attachment: 'supporting-document-demo.pdf',
+    attachment: 'supporting-document.pdf',
     name: 'Alex Chen',
     reason: '因家人過世需臨時返鄉，先行購買一般機票，事後申請喪親優惠票價差額。'
   },
@@ -58,7 +58,9 @@ const DEMO_DATA = {
 
   decision: {
     date: '2024-02-14',
-    caseTitle: 'Moffatt v. Air Canada, 2024 BCCRT 149',
+    caseTitle: 'Alex Chen v. Northline Air',
+    sourceTitle: 'Moffatt v. Air Canada, 2024 BCCRT 149',
+    sourceUrl: 'https://www.canlii.org/en/bc/bccrt/doc/2024/2024bccrt149/2024bccrt149.html',
     damages: 650.88,
     interest: 36.14,
     fees: 125.00,
@@ -74,13 +76,15 @@ const DEMO_DATA = {
     title: '喪親優惠票價／Bereavement Fares',
     updatedAt: '2022-10-01',
     keyLine: '不接受在旅行完成後才提出的喪親優惠追溯申請。',
-    applyLine: '如需適用優惠，請依政策於訂票前／符合規定的階段聯繫航空公司辦理。'
+    // Northline Air 的簡化劇情規則，非原裁決逐字政策。
+    applyLine: '喪親優惠須於購票時申請；已按一般票價購買的機票，不接受事後追溯調整。'
   },
 
   chat: {
     welcome: '您好，我是 Northline Air 的 AI 線上客服，請問有什麼可以幫您？',
-    intro: '喪親優惠票價提供符合資格的旅客票價減免。請於訂票前聯繫本公司，或於旅程開始前提出申請。詳細規定請參閱「喪親優惠政策」。',
-    wrong: '如果需要立即出發，或已經旅行，可在機票開立後 <mark>90 天內</mark>填寫退款申請表，申請喪親優惠票價。',
+    intro: '本公司提供符合條件的喪親優惠票價，適用資格、所需文件與辦理方式可參閱「喪親優惠政策」。若您有急需出發的情況，也可以進一步詢問。',
+    afterHours: '目前非真人客服營業時間，將由 AI 線上客服為您服務。',
+    wrong: '如果需要立即出發，或已經旅行，可在機票開立後 <mark>90 天內</mark>填寫<a href="claim.html">退款申請表</a>，申請<a href="policy.html">喪親優惠票價</a>。',
     endingQuestion: '你好，請問你們的資訊都值得信任嗎？',
     endingAnswer: '當然！您可以放心信任我們的服務。',
     disclaimer: 'AI 回答僅供參考，本公司概不負責。',
@@ -105,8 +109,8 @@ const DEMO_DATA = {
       tag: '退款拒絕',
       body: [
         '親愛的 Alex Chen 您好：',
-        '關於您於 2022/11/17 提出的喪親優惠差額申請（訂位代碼 FILM-1103），經查您的旅程已於 2022/11/12 開始並完成。',
-        '依本公司喪親票價政策，無法追溯適用。',
+        '關於您於 2022/11/17 提出的喪親優惠票價差額申請（訂位代碼 FILM-1103），經查，您欲在購買一般票價後追溯適用喪親優惠。',
+        '依本公司的申請程序，已按一般票價購買的機票無法事後追溯調整，因此無法核准本次申請。',
         '如有其他疑問，歡迎透過官方網站聯絡客服。'
       ],
       attachments: []
@@ -130,7 +134,7 @@ const DEMO_DATA = {
       attachments: [
         'AI 對話截圖（ai-chat-90days.png）',
         '申請文件（claim-form-1103.pdf）',
-        '模擬證明文件（supporting-document-demo.pdf）'
+        '證明文件（supporting-document.pdf）'
       ]
     },
     {

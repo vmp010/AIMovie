@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>電子登機證 — Northline Air（拍攝用）</title>
+  <title>電子登機證 — Northline Air</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body data-page="boarding">
 
+  <div class="utility-bar"><div class="container"><span>Northline Air · 加拿大境內航線</span><span>Canada　|　繁體中文　|　CAD</span></div></div>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
@@ -16,12 +18,19 @@
       </a>
       <nav class="main-nav" aria-label="主要導覽">
         <a href="index.html">航班搜尋</a>
-        <a href="policy.html">喪親優惠</a>
-        <a href="claim.html">申請優惠</a>
-        <a href="mail.html">我的信箱</a>
+        <details class="nav-services">
+          <summary>旅客服務</summary>
+          <div class="service-menu">
+            <a href="boarding.html">電子登機證</a>
+            <a href="policy.html">喪親優惠</a>
+            <a href="claim.html">票價差額申請</a>
+          </div>
+        </details>
+        <a href="boarding.html">我的行程</a>
+        <a class="crew-only" href="mail.html">我的信箱</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-ghost btn-sm" href="staff.html">客服後台</a>
+        <a class="crew-only btn btn-ghost btn-sm" href="staff.html">客服後台</a>
         <a class="btn btn-primary btn-sm" href="booking.html">前往訂票</a>
       </div>
     </div>
@@ -29,17 +38,17 @@
 
   <main class="page">
     <div class="container">
-      <div class="breadcrumb">
+      <div class="breadcrumb crew-only">
         <a href="index.html">首頁</a><span>/</span><span>電子登機證</span>
       </div>
 
-      <div class="page-head">
+      <div class="page-head crew-only">
         <span class="eyebrow">Mobile Boarding Pass · Film Prop</span>
         <h1>電子登機證</h1>
         <p>P2 靜態素材。可切換去程與回程登機證，供第三場快剪與特寫使用。</p>
       </div>
 
-      <div class="segmented" role="tablist" aria-label="登機證選擇">
+      <div class="segmented crew-only" role="tablist" aria-label="登機證選擇">
         <button type="button" data-trip="outbound" class="is-active">去程 · 11/12</button>
         <button type="button" data-trip="return">回程 · 11/18</button>
       </div>
@@ -90,17 +99,19 @@
         </div>
       </article>
 
-      <p style="text-align:center;margin-top:22px;font-size:.8rem;color:var(--muted)">
+      <p class="crew-only" style="text-align:center;margin-top:22px;font-size:.8rem;color:var(--muted)">
         可直接以 <code>boarding.html?trip=return</code> 開啟回程登機證。此為虛構素材，不具任何搭機效力。
       </p>
 
-      <div class="doc-note" style="max-width:720px;margin:22px auto 0">
+      <div class="doc-note crew-only" style="max-width:720px;margin:22px auto 0">
         <strong>拍攝提醒：</strong>登機證上的姓名、航班、座位與條碼皆為假資料；可全螢幕或手機翻拍使用，不需連接真實航空公司系統。
       </div>
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer class="customer-footer film-only"><div class="container"><strong>Northline Air</strong><nav aria-label="頁尾服務"><a href="index.html">預訂航班</a><a href="policy.html">喪親優惠政策</a><a href="claim.html">喪親優惠申請</a></nav><small>Canada · 繁體中文 · CAD</small></div></footer>
+
+  <footer class="site-footer crew-only">
     <div class="container footer-inner">
       <div>
         <div class="footer-brand">
@@ -111,9 +122,9 @@
         <div class="footer-links">
           <a href="policy.html">喪親優惠政策</a>
           <a href="claim.html">差額申請</a>
-          <a href="mail.html">模擬信箱</a>
-          <a href="staff.html">客服後台</a>
-          <a href="case.html">申訴與裁決</a>
+          <a class="crew-only" href="mail.html">模擬信箱</a>
+          <a class="crew-only" href="staff.html">客服後台</a>
+          <a class="crew-only" href="case.html">申訴與裁決</a>
           <a href="boarding.html">登機證</a>
         </div>
       </div>
