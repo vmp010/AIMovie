@@ -26,11 +26,8 @@
 
   let state = loadState();
 
-  // 相容舊版單筆訂單，之後分別保存去程與回程。
+  // 完成來回購票時，以單筆來回訂單取代舊版單程紀錄。
   state.bookings = Object.assign({}, state.bookings);
-  if (state.booking && state.booking.type && !state.bookings[state.booking.type]) {
-    state.bookings[state.booking.type] = state.booking;
-  }
   delete state.booking;
 
   function loadState() {
@@ -60,7 +57,7 @@
   }
 
   function money(value) {
-    return 'C$' + Number(value).toFixed(2);
+    return 'C$' + Number(value).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
   function slashDate(iso) {
@@ -126,9 +123,9 @@
         ['1-3 航班搜尋', 'index.html?scene=1-3'],
         ['1-6 客服開場', 'index.html?scene=1-6'],
         ['2-2 九十天回答', 'index.html?scene=2-2'],
-        ['2-4 去程購票', 'booking.html?scene=2-4'],
+        ['2-4 來回購票', 'booking.html?scene=2-4'],
         ['3-1 去程登機證', 'boarding.html'],
-        ['3-2 回程購票', 'booking.html?trip=return&scene=3-2'],
+        ['3-2 查看已訂回程', 'booking.html?trip=return&scene=3-2'],
         ['3-3 提出申請', 'claim.html?scene=3-3'],
         ['3-4 回程登機證', 'boarding.html?trip=return'],
         ['4-1 拒絕通知', 'mail.html?scene=4-1'],
@@ -391,12 +388,17 @@
     } else if (/先買|後補|之後再申請|先.*買/.test(trimmed)) {
       reply = DATA.chat.wrong;
     } else if (/喪親|berea|優惠/i.test(trimmed)) {
-      reply = DATA.chat.intro + ' <a href="policy.html">查看喪親優惠政策 →</a>';
+      reply = introReply();
     } else {
       reply = DATA.chat.fallback;
     }
 
     botSay(reply, withDisclaimer);
+  }
+
+  function introReply() {
+    return DATA.chat.afterHours + '<br><br>' + DATA.chat.intro +
+      ' <a href="policy.html">查看喪親優惠政策 →</a>';
   }
 
   function autoExchange(userText, reply, withDisclaimer) {
@@ -410,8 +412,7 @@
 
     if (scene === '1-6') {
       openChat();
-      autoExchange(DATA.chat.quickQuestions[0], DATA.chat.afterHours + '<br><br>' +
-        DATA.chat.intro + ' <a href="policy.html">查看喪親優惠政策 →</a>', false);
+      autoExchange(DATA.chat.quickQuestions[0], introReply(), false);
       return;
     }
 
@@ -422,6 +423,8 @@
 
     if (scene === '2-2') {
       openChat();
+      addMessage('user', esc(DATA.chat.quickQuestions[0]));
+      addMessage('bot', introReply(), false);
       autoExchange(DATA.chat.quickQuestions[1], DATA.chat.wrong, false);
       return;
     }
@@ -457,25 +460,25 @@
         const from = fromSel.value;
         fromSel.value = toSel.value;
         toSel.value = from;
-        $('#departDate').value = fromSel.value === 'YYZ' ? DATA.returnFlight.flightAt : DATA.departure.flightAt;
       });
     }
 
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      const flight = fromSel.value === 'YYZ' ? DATA.returnFlight : DATA.departure;
+      const flight = DATA.departure;
       const error = $('#searchError');
-      if (fromSel.value !== flight.from || toSel.value !== flight.to || $('#departDate').value !== flight.flightAt) {
+      if (fromSel.value !== flight.from || toSel.value !== flight.to || $('#departDate').value !== flight.flightAt || $('#returnDate').value !== DATA.returnFlight.flightAt) {
         error.textContent = '您選擇的航線或日期目前沒有可預訂航班，請調整搜尋條件。';
         error.hidden = false;
         return;
       }
       error.hidden = true;
       const query = new URLSearchParams({
-        trip: flight === DATA.returnFlight ? 'return' : 'outbound',
+        trip: 'roundtrip',
         from: fromSel ? fromSel.value : 'YVR',
         to: toSel ? toSel.value : 'YYZ',
-        date: $('#departDate') ? $('#departDate').value : '2022-11-12'
+        date: $('#departDate').value,
+        returnDate: $('#returnDate').value
       });
       window.location.href = modeUrl('booking.html?' + query.toString());
     });
@@ -492,13 +495,18 @@
   function initBooking() {
     if (page !== 'booking') return;
 
-    const isReturn = params.get('trip') === 'return';
-    const flight = isReturn ? DATA.returnFlight : DATA.departure;
-    const purchaseLabel = isReturn ? '回程單程含稅' : '去程單程含稅';
+    const viewReturn = scene === '3-2' || params.get('trip') === 'return';
+    const flight = DATA.departure;
+    const returnFlight = DATA.returnFlight;
+    const booking = DATA.booking;
+    const dates = slashDate(flight.flightAt) + ' — ' + slashDate(returnFlight.flightAt);
+    // 保留舊回程場次網址的查詢條件，畫面改為查看已訂來回行程。
+    const queryFlight = params.get('trip') === 'return' ? returnFlight : flight;
 
     if (['from', 'to', 'date'].some(function (key) {
-      return params.has(key) && params.get(key) !== (key === 'date' ? flight.flightAt : flight[key]);
-    }) || (params.has('trip') && ['oneway', 'outbound', 'return'].indexOf(params.get('trip')) === -1)) {
+      return params.has(key) && params.get(key) !== (key === 'date' ? queryFlight.flightAt : queryFlight[key]);
+    }) || (params.has('returnDate') && params.get('returnDate') !== returnFlight.flightAt)
+      || (params.has('trip') && ['roundtrip', 'oneway', 'outbound', 'return'].indexOf(params.get('trip')) === -1)) {
       $('.booking-layout').hidden = true;
       $('.steps').hidden = true;
       setText('#pageTitle', '沒有符合條件的航班');
@@ -506,12 +514,10 @@
       return;
     }
 
-    $('#bookingBoardingLink').href = modeUrl('boarding.html?trip=' + (isReturn ? 'return' : 'outbound'));
-
-    setText('#pageTitle', isReturn ? '回程航班' : '去程航班');
-    setText('#pageSubtitle', isReturn
-      ? 'Toronto (YYZ) → Vancouver (YVR) · ' + slashDate(flight.flightAt)
-      : 'Vancouver (YVR) → Toronto (YYZ) · ' + slashDate(flight.flightAt));
+    setText('#pageTitle', viewReturn ? '查看已訂回程' : '來回航班');
+    setText('#pageSubtitle', viewReturn
+      ? 'Toronto (YYZ) → Vancouver (YVR) · ' + slashDate(returnFlight.flightAt)
+      : 'Vancouver (YVR) ⇄ Toronto (YYZ) · ' + dates);
     setText('#flightNo', flight.flightNo);
     setText('#flightFrom', flight.from);
     setText('#flightFromCity', flight.fromCity);
@@ -520,30 +526,44 @@
     setText('#departTime', flight.departTime);
     setText('#arriveTime', flight.arriveTime);
     setText('#duration', flight.duration);
-    setText('#priceAmount', money(flight.amount));
-    setText('#purchaseLabel', purchaseLabel);
-    setText('#bookedDate', slashDate(flight.bookedAt));
-    setText('#flightDate', slashDate(flight.flightAt));
+    setText('#outboundDate', slashDate(flight.flightAt));
+    setText('#returnFlightDate', slashDate(returnFlight.flightAt));
+    setText('#returnFlightNo', returnFlight.flightNo);
+    setText('#returnFrom', returnFlight.from);
+    setText('#returnFromCity', returnFlight.fromCity);
+    setText('#returnTo', returnFlight.to);
+    setText('#returnToCity', returnFlight.toCity);
+    setText('#returnDepartTime', returnFlight.departTime);
+    setText('#returnArriveTime', returnFlight.arriveTime);
+    setText('#returnDuration', returnFlight.duration);
+    setText('#priceAmount', money(booking.amount));
+    setText('#bookedDate', slashDate(booking.bookedAt));
+    setText('#flightDate', dates);
 
     setText('#sumFrom', flight.from);
     setText('#sumTo', flight.to);
-    setText('#sumDate', slashDate(flight.flightAt));
-    setText('#sumRoute', flight.fromCity + ' → ' + flight.toCity);
-    setText('#sumFare', money(flight.amount));
-    setText('#sumTotal', money(flight.amount));
+    setText('#sumDate', dates);
+    setText('#sumRoute', flight.fromCity + ' ⇄ ' + flight.toCity);
+    setText('#sumFare', money(booking.amount));
+    setText('#sumTotal', money(booking.amount));
 
     setText('#confirmFlightNo', flight.flightNo + ' · 直飛');
     setText('#confirmRoute', flight.from + ' ' + flight.fromCity + ' → ' + flight.to + ' ' + flight.toCity);
     setText('#confirmDate', slashDate(flight.flightAt));
-    setText('#confirmBooked', slashDate(flight.bookedAt));
-    setText('#confirmAmount', money(flight.amount));
+    setText('#confirmReturnFlightNo', returnFlight.flightNo + ' · 直飛');
+    setText('#confirmReturnRoute', returnFlight.from + ' ' + returnFlight.fromCity + ' → ' + returnFlight.to + ' ' + returnFlight.toCity);
+    setText('#confirmReturnDate', slashDate(returnFlight.flightAt));
+    setText('#confirmBooked', slashDate(booking.bookedAt));
+    setText('#confirmAmount', money(booking.amount));
 
     setText('#successFlightNo', flight.flightNo);
     setText('#successRoute', flight.from + ' → ' + flight.to);
     setText('#successDate', slashDate(flight.flightAt));
-    setText('#successBooked', slashDate(flight.bookedAt));
-    setText('#successAmount', money(flight.amount));
-    setText('#successType', isReturn ? '回程' : '去程');
+    setText('#successReturnFlightNo', returnFlight.flightNo);
+    setText('#successReturnRoute', returnFlight.from + ' → ' + returnFlight.to);
+    setText('#successReturnDate', slashDate(returnFlight.flightAt));
+    setText('#successBooked', slashDate(booking.bookedAt));
+    setText('#successAmount', money(booking.amount));
 
     function setStep(step) {
       $$('.steps li').forEach(function (li) {
@@ -575,10 +595,22 @@
       backBtn.addEventListener('click', function () {
         if (confirmPanel) confirmPanel.hidden = true;
         if (flightCard) flightCard.classList.remove('is-selected');
-        if (selectBtn) selectBtn.textContent = '選擇此航班';
+        if (selectBtn) selectBtn.textContent = '選擇來回航班';
         setStep(1);
         if (flightCard) flightCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
+    }
+
+    function showBooking() {
+      if (confirmPanel) confirmPanel.hidden = true;
+      if (flightCard) flightCard.hidden = true;
+      const summary = $('.summary-card');
+      if (summary) summary.hidden = true;
+      if (successCard) {
+        successCard.hidden = false;
+        successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      setStep(3);
     }
 
     const confirmBtn = $('#confirmBooking');
@@ -589,29 +621,29 @@
           return;
         }
         $('#paymentError').hidden = true;
-        state.bookings[isReturn ? 'return' : 'outbound'] = {
-          type: isReturn ? 'return' : 'outbound',
-          reference: DATA.booking.reference,
-          passenger: DATA.booking.passenger,
-          flightNo: flight.flightNo,
-          amount: flight.amount,
-          date: flight.flightAt
+        state.bookings = {
+          roundtrip: {
+            type: 'roundtrip',
+            reference: booking.reference,
+            passenger: booking.passenger,
+            bookedAt: booking.bookedAt,
+            amount: booking.amount,
+            flights: [
+              { flightNo: flight.flightNo, date: flight.flightAt },
+              { flightNo: returnFlight.flightNo, date: returnFlight.flightAt }
+            ]
+          }
         };
         saveState();
-
-        if (confirmPanel) confirmPanel.hidden = true;
-        if (flightCard) flightCard.hidden = true;
-        const summary = $('.summary-card');
-        if (summary) summary.hidden = true;
-        if (successCard) {
-          successCard.hidden = false;
-          successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        setStep(3);
+        showBooking();
       });
     }
 
-    if (scene === '2-4' || scene === '3-2') {
+    if (viewReturn) {
+      setText('#successTitle', '已確認的來回行程');
+      showBooking();
+      $('.steps').hidden = true;
+    } else if (scene === '2-4') {
       window.setTimeout(selectFlight, 200);
     }
   }

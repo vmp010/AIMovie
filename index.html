@@ -48,16 +48,16 @@
             <li>24 小時 AI 線上客服</li>
             <li>票價包含稅費</li>
           </ul>
-          <a class="route-offer" href="booking.html"><span>Vancouver <b>YVR → YYZ</b> Toronto</span><small>11 月 12 日 · 單程經濟艙 · 含稅</small><strong>C$794.98 <span>查看航班 →</span></strong></a>
+          <a class="route-offer" href="booking.html"><span>Vancouver <b>YVR ⇄ YYZ</b> Toronto</span><small>11 月 12 日出發 · 11 月 18 日回程 · 來回經濟艙 · 含稅</small><strong>C$1,630.36 <span>查看航班 →</span></strong></a>
         </div>
 
         <div class="search-card" id="search">
           <h2>尋找航班</h2>
-          <p class="sub">選擇出發地與日期，查詢單程航班。</p>
+          <p class="sub">選擇出發地與去回程日期，查詢來回航班。</p>
 
           <form id="searchForm" novalidate>
             <div class="trip-switch" role="radiogroup" aria-label="行程類型">
-              <label><input type="radio" name="trip" value="oneway" checked><span>單程</span></label>
+              <label><input type="radio" name="trip" value="roundtrip" checked><span>來回</span></label>
             </div>
 
             <div class="field-row">
@@ -86,15 +86,21 @@
                 <span>出發日期</span>
                 <input type="date" id="departDate" name="date" value="2022-11-12">
               </label>
-              <label class="field"><span>客艙</span><select name="cabin"><option>經濟艙</option></select></label>
+              <label class="field">
+                <span>回程日期</span>
+                <input type="date" id="returnDate" name="returnDate" value="2022-11-18">
+              </label>
             </div>
 
-            <label class="field">
-              <span>乘客</span>
-              <select name="pax">
-                <option>1 位成人</option>
-              </select>
-            </label>
+            <div class="field-row">
+              <label class="field">
+                <span>乘客</span>
+                <select name="pax">
+                  <option>1 位成人</option>
+                </select>
+              </label>
+              <label class="field"><span>客艙</span><select name="cabin"><option>經濟艙</option></select></label>
+            </div>
 
             <button class="btn btn-primary btn-block btn-lg" type="submit">搜尋航班</button>
             <p class="search-note">票價以加幣計算，包含適用稅金與費用。</p>

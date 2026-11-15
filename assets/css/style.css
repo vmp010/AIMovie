@@ -716,6 +716,18 @@ mark {
   min-width: 0;
 }
 
+.flight-leg {
+  margin: 0 0 14px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.return-leg {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
 .flight-airline {
   display: flex;
   align-items: center;

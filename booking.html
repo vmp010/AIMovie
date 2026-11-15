@@ -43,8 +43,8 @@
       </div>
 
       <div class="page-head">
-        <h1 id="pageTitle">去程航班</h1>
-        <p id="pageSubtitle">Vancouver (YVR) → Toronto (YYZ) · 2022/11/12</p>
+        <h1 id="pageTitle">來回航班</h1>
+        <p id="pageSubtitle">Vancouver (YVR) ⇄ Toronto (YYZ) · 2022/11/12 — 2022/11/18</p>
       </div>
 
       <ol class="steps" aria-label="訂票進度">
@@ -57,6 +57,7 @@
         <section>
           <article class="flight-card" id="flightCard">
             <div class="flight-main">
+              <p class="flight-leg">去程 · <span id="outboundDate">2022/11/12</span></p>
               <div class="flight-airline">
                 <img src="assets/img/logo.svg" alt="">
                 <div>
@@ -81,13 +82,38 @@
                   <small id="flightToCity">Toronto</small>
                 </div>
               </div>
+              <p class="flight-leg return-leg">回程 · <span id="returnFlightDate">2022/11/18</span></p>
+              <div class="flight-airline">
+                <img src="assets/img/logo.svg" alt="">
+                <div>
+                  <strong>Northline Air</strong>
+                  <small><span id="returnFlightNo">AIR 1104</span> · 經濟艙 · 直飛</small>
+                </div>
+              </div>
+              <div class="flight-route">
+                <div class="route-point">
+                  <strong id="returnDepartTime">10:25</strong>
+                  <span id="returnFrom">YYZ</span>
+                  <small id="returnFromCity">Toronto</small>
+                </div>
+                <div class="route-line">
+                  <span class="route-duration" id="returnDuration">5 小時 25 分</span>
+                  <span class="line"></span>
+                  <small>直飛</small>
+                </div>
+                <div class="route-point">
+                  <strong id="returnArriveTime">12:50</strong>
+                  <span id="returnTo">YVR</span>
+                  <small id="returnToCity">Vancouver</small>
+                </div>
+              </div>
             </div>
             <div class="flight-side">
               <div class="price">
-                <small id="purchaseLabel">去程單程含稅</small>
-                <strong id="priceAmount">C$794.98</strong>
+                <small id="purchaseLabel">來回總價 · 含稅</small>
+                <strong id="priceAmount">C$1,630.36</strong>
               </div>
-              <button class="btn btn-primary" type="button" id="selectFlight">選擇此航班</button>
+              <button class="btn btn-primary" type="button" id="selectFlight">選擇來回航班</button>
             </div>
           </article>
 
@@ -95,11 +121,14 @@
             <h2>確認訂購</h2>
             <p style="color:var(--muted);margin-bottom:0">請確認以下航班與票價資訊。</p>
             <dl class="kv">
-              <dt>航班</dt><dd id="confirmFlightNo">AIR 1103 · 直飛</dd>
-              <dt>航段</dt><dd id="confirmRoute">YVR Vancouver → YYZ Toronto</dd>
-              <dt>搭機日期</dt><dd id="confirmDate">2022/11/12</dd>
+              <dt>去程航班</dt><dd id="confirmFlightNo">AIR 1103 · 直飛</dd>
+              <dt>去程航段</dt><dd id="confirmRoute">YVR Vancouver → YYZ Toronto</dd>
+              <dt>出發日期</dt><dd id="confirmDate">2022/11/12</dd>
+              <dt>回程航班</dt><dd id="confirmReturnFlightNo">AIR 1104 · 直飛</dd>
+              <dt>回程航段</dt><dd id="confirmReturnRoute">YYZ Toronto → YVR Vancouver</dd>
+              <dt>回程日期</dt><dd id="confirmReturnDate">2022/11/18</dd>
               <dt>購票日期</dt><dd id="confirmBooked">2022/11/11</dd>
-              <dt>票價</dt><dd id="confirmAmount">C$794.98</dd>
+              <dt>來回總價（含稅）</dt><dd id="confirmAmount">C$1,630.36</dd>
               <dt>乘客</dt><dd>Alex Chen（1 位成人）</dd>
               <dt>電子郵件</dt><dd>alex.chen@demo.example</dd>
             </dl>
@@ -122,22 +151,26 @@
 
           <section class="success-card" id="successCard" hidden>
             <div class="success-icon">✓</div>
-            <h2>訂票成功</h2>
-            <p>您的<span id="successType">去程</span>機票已確認。請保留以下訂位資訊。</p>
+            <h2 id="successTitle">訂票成功</h2>
+            <p>您的來回機票已確認。請保留以下訂位資訊。</p>
             <div class="ref">FILM-1103</div>
             <dl class="kv">
-              <dt>航班</dt><dd id="successFlightNo">AIR 1103</dd>
-              <dt>航段</dt><dd id="successRoute">YVR → YYZ</dd>
-              <dt>搭機日期</dt><dd id="successDate">2022/11/12</dd>
+              <dt>去程航班</dt><dd id="successFlightNo">AIR 1103</dd>
+              <dt>去程航段</dt><dd id="successRoute">YVR → YYZ</dd>
+              <dt>出發日期</dt><dd id="successDate">2022/11/12</dd>
+              <dt>回程航班</dt><dd id="successReturnFlightNo">AIR 1104</dd>
+              <dt>回程航段</dt><dd id="successReturnRoute">YYZ → YVR</dd>
+              <dt>回程日期</dt><dd id="successReturnDate">2022/11/18</dd>
               <dt>購票日期</dt><dd id="successBooked">2022/11/11</dd>
-              <dt>已付款金額</dt><dd id="successAmount">C$794.98</dd>
+              <dt>來回已付款金額</dt><dd id="successAmount">C$1,630.36</dd>
             </dl>
             <div class="notice ok crew-only" style="max-width:520px;margin-inline:auto;text-align:left">
               <span>✓</span>
-              <span>模擬訂位代碼已建立。此畫面不會實際扣款，也不會向航空公司送出資料。</span>
+              <span>固定來回訂位展示；3-2 可直接預載此畫面。此畫面不會實際扣款，也不會向航空公司送出資料。</span>
             </div>
             <div class="success-actions">
-              <a class="btn btn-navy" id="bookingBoardingLink" href="boarding.html">查看登機證</a>
+              <a class="btn btn-navy" href="boarding.html">查看去程登機證</a>
+              <a class="btn btn-navy" href="boarding.html?trip=return">查看回程登機證</a>
               <a class="crew-only btn btn-outline" href="mail.html">前往信箱</a>
               <a class="btn btn-outline" href="policy.html">喪親優惠政策</a>
             </div>
@@ -148,18 +181,18 @@
           <h3>訂購摘要</h3>
           <div class="summary-route">
             <span id="sumFrom">YVR</span>
-            <span class="plane">✈</span>
+            <span class="plane">⇄</span>
             <span id="sumTo">YYZ</span>
           </div>
-          <p class="summary-meta"><span id="sumRoute">Vancouver → Toronto</span><br><span id="sumDate">2022/11/12</span> · 1 位成人 · 經濟艙</p>
+          <p class="summary-meta"><span id="sumRoute">Vancouver ⇄ Toronto</span><br><span id="sumDate">2022/11/12 — 2022/11/18</span><br>1 位成人 · 來回經濟艙</p>
           <dl class="money-list">
-            <div class="money-row"><dt>機票</dt><dd id="sumFare">C$794.98</dd></div>
+            <div class="money-row"><dt>來回機票</dt><dd id="sumFare">C$1,630.36</dd></div>
             <div class="money-row"><dt>稅金與費用</dt><dd>已包含</dd></div>
-            <div class="money-row total"><dt>總計</dt><dd class="val" id="sumTotal">C$794.98</dd></div>
+            <div class="money-row total"><dt>總計</dt><dd class="val" id="sumTotal">C$1,630.36</dd></div>
           </dl>
           <div class="notice info" style="margin-bottom:0;margin-top:14px">
             <span>ⓘ</span>
-            <span>購票日期 <strong id="bookedDate">2022/11/11</strong>，搭機日期 <strong id="flightDate">2022/11/12</strong>。</span>
+            <span>購票日期 <strong id="bookedDate">2022/11/11</strong>，去回程日期 <strong id="flightDate">2022/11/12 — 2022/11/18</strong>。</span>
           </div>
         </aside>
       </div>

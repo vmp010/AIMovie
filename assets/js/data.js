@@ -15,12 +15,10 @@ const DEMO_DATA = {
     fromCity: 'Vancouver',
     to: 'YYZ',
     toCity: 'Toronto',
-    bookedAt: '2022-11-11',
     flightAt: '2022-11-12',
     departTime: '08:10',
     arriveTime: '15:35',
-    duration: '4 小時 25 分',
-    amount: 794.98
+    duration: '4 小時 25 分'
   },
 
   returnFlight: {
@@ -29,17 +27,17 @@ const DEMO_DATA = {
     fromCity: 'Toronto',
     to: 'YVR',
     toCity: 'Vancouver',
-    bookedAt: '2022-11-16',
     flightAt: '2022-11-18',
     departTime: '10:25',
     arriveTime: '12:50',
-    duration: '5 小時 25 分',
-    amount: 845.38
+    duration: '5 小時 25 分'
   },
 
   booking: {
     reference: 'FILM-1103',
-    passenger: 'ALEX CHEN'
+    passenger: 'ALEX CHEN',
+    bookedAt: '2022-11-11',
+    amount: 1630.36
   },
 
   claim: {
