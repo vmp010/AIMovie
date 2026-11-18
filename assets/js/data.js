@@ -37,7 +37,9 @@ const DEMO_DATA = {
     reference: 'FILM-1103',
     passenger: 'ALEX CHEN',
     bookedAt: '2022-11-11',
-    amount: 1630.36
+    // 2026/11/18 臺銀即期賣出 23.19：CAD 1,630.36 → TWD 37,808（整數元）。
+    currency: 'TWD',
+    amount: 37808
   },
 
   claim: {
@@ -59,10 +61,11 @@ const DEMO_DATA = {
     caseTitle: 'Alex Chen v. Northline Air',
     sourceTitle: 'Moffatt v. Air Canada, 2024 BCCRT 149',
     sourceUrl: 'https://www.canlii.org/en/bc/bccrt/doc/2024/2024bccrt149/2024bccrt149.html',
-    damages: 650.88,
-    interest: 36.14,
-    fees: 125.00,
-    total: 812.02,
+    // 原裁決 CAD 650.88 + 36.14 + 125.00，以同一匯率 23.19 換算整數元。
+    damages: 15094,
+    interest: 838,
+    fees: 2899,
+    total: 18831,
     keyPoints: [
       '航空公司對其官方網站聊天機器人提供的資訊負有責任。',
       '聊天機器人的回覆構成過失性不實陳述（negligent misrepresentation）。',

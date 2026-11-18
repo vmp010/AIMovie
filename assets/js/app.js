@@ -57,7 +57,7 @@
   }
 
   function money(value) {
-    return 'C$' + Number(value).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return 'NT$' + Number(value).toLocaleString('zh-TW', { maximumFractionDigits: 0 });
   }
 
   function slashDate(iso) {
@@ -325,7 +325,7 @@
         addMessage('bot', html, withDisclaimer);
         chat.busy = false;
         resolve();
-      }, 760);
+      }, 1500);
     });
   }
 
@@ -338,11 +338,10 @@
   function renderQuick() {
     if (!chat.quick) return;
     chat.quick.innerHTML = '';
-    chat.quick.hidden = false;
-
     const questions = state.mode === 'ending'
       ? [DATA.chat.endingQuestion]
-      : DATA.chat.quickQuestions.slice();
+      : [];
+    chat.quick.hidden = questions.length === 0;
 
     questions.forEach(function (question) {
       const btn = document.createElement('button');
@@ -627,6 +626,7 @@
             reference: booking.reference,
             passenger: booking.passenger,
             bookedAt: booking.bookedAt,
+            currency: booking.currency,
             amount: booking.amount,
             flights: [
               { flightNo: flight.flightNo, date: flight.flightAt },
