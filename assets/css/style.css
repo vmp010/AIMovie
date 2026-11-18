@@ -1552,6 +1552,26 @@ mark {
 }
 
 /* ---------- Staff ---------- */
+.staff-reply {
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.staff-reply textarea {
+  line-height: 1.8;
+}
+
+.staff-address {
+  margin: 0;
+  font-size: .9rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.staff-address span {
+  color: var(--muted);
+}
+
 .staff-head {
   display: flex;
   align-items: center;

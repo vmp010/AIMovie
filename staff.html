@@ -13,6 +13,7 @@
 
   <main class="page">
     <div class="container">
+      <div id="staffReview">
       <div class="breadcrumb crew-only">
         <a href="index.html">首頁</a><span>/</span><span>客服後台</span><span>/</span><span>客訴工單 DEMO-1103</span>
       </div>
@@ -91,6 +92,46 @@
       <div class="doc-note crew-only" style="margin-top:20px">
         <strong>拍攝說明：</strong>本後台為戲劇化重製畫面，不是真實客服系統，也不含任何真實乘客資料。場景入口：<code>staff.html?scene=4-4</code>、<code>staff.html?scene=4-6</code>。
       </div>
+      </div>
+
+      <section class="staff-reply" id="staffReply" hidden>
+        <div class="page-head">
+          <span class="eyebrow">Customer Relations / Email reply</span>
+          <h1>客服郵件回覆</h1>
+          <p>客訴工單 #CR-1103　／　訂位代碼 FILM-1103　／　處理單位：客戶關係部</p>
+        </div>
+
+        <form class="form-card card" id="staffReplyForm">
+          <div class="section-head">
+            <h2>喪親優惠差額申請 · 正式回覆</h2>
+            <span class="tag" id="staffReplyStatus" role="status">草稿 · 尚未寄出</span>
+          </div>
+          <div class="field-row">
+            <div class="field"><span>寄件人</span><p class="staff-address">Northline Air 客服中心<br><span>support@northline-demo.example</span></p></div>
+            <div class="field"><span>收件人</span><p class="staff-address">Alex Chen<br><span>alex.chen@demo.example</span></p></div>
+          </div>
+          <label class="field">
+            <span>主旨</span>
+            <input id="staffReplySubject" maxlength="160" required value="喪親優惠差額申請覆核結果（FILM-1103）">
+          </label>
+          <label class="field">
+            <span>郵件內容</span>
+            <textarea id="staffReplyBody" rows="11" maxlength="4000" required>親愛的 Alex Chen 您好：
+
+感謝您提供相關資料。我們理解聊天機器人的回覆可能造成誤解，已將此問題轉交相關部門。
+
+經再次審核，依本公司現行政策，已按一般票價購買的機票不接受事後追溯調整。因此，本公司正式決定不予核准您的喪親優惠差額申請，原退款審核結果維持不變。
+
+Northline Air 客服中心</textarea>
+          </label>
+          <p class="notice" id="staffReplyError" role="alert" hidden>請填寫主旨與郵件內容。</p>
+          <p class="notice ok" id="staffReplySent" role="status" hidden>郵件已寄出給 Alex Chen。</p>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit" id="staffReplySend">寄出</button>
+          </div>
+          <p class="case-note crew-only">拍攝用寄信畫面；按下寄出只變更本頁狀態，不會實際寄信或儲存輸入內容。重播場次可恢復預填草稿。</p>
+        </form>
+      </section>
     </div>
   </main>
 

@@ -132,7 +132,8 @@
         ['4-3 寄出證據', 'mail.html?scene=4-3'],
         ['4-4 客服工單', 'staff.html?scene=4-4'],
         ['4-5 客服回覆', 'mail.html?scene=4-5'],
-        ['5-6 準備申訴', 'case.html?scene=5-6'],
+        ['5-6 客服正式拒絕信', 'staff.html?scene=5-6'],
+        ['6-1 準備申訴', 'case.html?scene=6-1'],
         ['6-2 歷史資料', 'case.html?scene=6-2'],
         ['6-4 裁決通知', 'case.html?scene=6-4'],
         ['7-7 結尾', 'index.html?scene=7-7']
@@ -977,6 +978,33 @@
 
   function initStaff() {
     if (page !== 'staff') return;
+    if (scene === '5-6') {
+      document.title = '客服後台 — 正式回覆 FILM-1103';
+      $('#staffReview').hidden = true;
+      $('#staffReply').hidden = false;
+      const form = $('#staffReplyForm');
+      const subject = $('#staffReplySubject');
+      const body = $('#staffReplyBody');
+      const send = $('#staffReplySend');
+      form.reset();
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (send.disabled) return;
+        if (!subject.value.trim() || !body.value.trim()) {
+          $('#staffReplyError').hidden = false;
+          (!subject.value.trim() ? subject : body).focus();
+          return;
+        }
+        $('#staffReplyError').hidden = true;
+        subject.readOnly = true;
+        body.readOnly = true;
+        send.disabled = true;
+        send.textContent = '已寄出';
+        setText('#staffReplyStatus', '已寄出');
+        $('#staffReplyStatus').classList.add('ok');
+        $('#staffReplySent').hidden = false;
+      });
+    }
     const main = $('main');
     const logout = $('#staffLogout');
     const signedOut = document.createElement('div');
@@ -1058,6 +1086,11 @@
      Boot
      --------------------------------------------------------- */
   function boot() {
+    // 舊的 5-6 書籤也改到客服回覆畫面，保留拍攝／劇組參數。
+    if (page === 'case' && scene === '5-6') {
+      window.location.replace(modeUrl('staff.html?' + params.toString()));
+      return;
+    }
     // 每個場次都從自己的時間點開始，避免結尾模式污染前面的鏡頭。
     state.mode = /^7-/.test(scene) ? 'ending' : 'normal';
     markActiveNav();
